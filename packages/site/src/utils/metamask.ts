@@ -18,3 +18,12 @@ export const isFlask = async () => {
     return false;
   }
 };
+
+// Get the account in the window object
+export const getMetaMaskAccount = async () => {
+  const provider = window.ethereum;
+  const accounts = await provider?.request({
+    method: 'eth_requestAccounts',
+  });
+  return accounts;
+};

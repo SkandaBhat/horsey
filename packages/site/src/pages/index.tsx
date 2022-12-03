@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { WorldIDWidget } from '@worldcoin/id'
@@ -9,6 +9,7 @@ import { defaultAbiCoder as abi } from "@ethersproject/abi";
 import {
   connectSnap,
   getSnap,
+  getMetaMaskAccount,
   sendHello,
   shouldDisplayReconnectButton,
 } from '../utils';
@@ -106,11 +107,22 @@ const ErrorMessage = styled.div`
 
 const Index = () => {
   const [state, dispatch] = useContext(MetaMaskContext);
+  const [metaMaskId, setMetaMaskId] = useState(undefined);
 
   const handleConnectClick = async () => {
     try {
       await connectSnap();
       const installedSnap = await getSnap();
+      const metaMaskAccounts = await getMetaMaskAccount();
+      let metaMaskAccountId;
+      if (metaMaskAccounts.length === 0) {
+        // MetaMask is locked or the user has not connected any metaMaskAccounts
+        console.log('No MetaMask Account ID Found.Please connect to MetaMask.');
+      } else if (metaMaskAccounts[0] !== metaMaskAccountId) {
+        metaMaskAccountId = metaMaskAccounts[0];
+      }
+      console.log('Metamask Account:', metaMaskAccountId);
+      setMetaMaskId(metaMaskAccountId);
 
       dispatch({
         type: MetamaskActions.SetInstalled,
@@ -153,7 +165,7 @@ const Index = () => {
             button: (
               <WorldIDWidget
                 actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
-                signal="0x7fd0127eB8b134793bf968C7b9Cfedd56c951d69"
+                signal={metaMaskId}
                 enableTelemetry
                 onSuccess={(verificationResponse) => {
                   console.log(verificationResponse);
