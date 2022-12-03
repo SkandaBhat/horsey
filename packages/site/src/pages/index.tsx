@@ -1,5 +1,6 @@
 import contract from '../../../../contract.json';
 import { useContext, useState } from 'react';
+import { Biconomy } from '@biconomy/mexa';
 import { Contract } from 'ethers';
 import styled from 'styled-components';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
@@ -21,6 +22,22 @@ import {
   SendHelloButton,
   Card,
 } from '../components';
+
+// type ExternalProvider = {
+//   isMetaMask?: boolean;
+//   isStatus?: boolean;
+//   host?: string;
+//   path?: string;
+//   sendAsync?: (
+//     request: { method: string; params?: any[] },
+//     callback: (error: any, response: any) => void,
+//   ) => void;
+//   send?: (
+//     request: { method: string; params?: any[] },
+//     callback: (error: any, response: any) => void,
+//   ) => void;
+//   request?: (request: { method: string; params?: any[] }) => Promise<any>;
+// };
 
 const Container = styled.div`
   display: flex;
@@ -168,8 +185,10 @@ const Index = () => {
                 signal={metaMaskId}
                 enableTelemetry
                 onSuccess={async (verificationResponse) => {
+                  const biconomyAPIKey =
+                    'XZtM2OhNT.1beb4f6e-b528-4ffe-81b9-e92e4f05817f';
                   const contractAddress =
-                    '0x2c93776de1D77cd99385c05f55cB44653D028a49';
+                    '0xd5B32069b749DFCE007B04451BaDEf0D8faeDF73';
 
                   console.log('verificationResponse', verificationResponse);
 
@@ -180,6 +199,13 @@ const Index = () => {
                   )[0];
 
                   // TODO: Implement biconomy here
+                  const biconomy = new Biconomy(window.ethereum, {
+                    apiKey: biconomyAPIKey,
+                    debug: true,
+                    contractAddresses: [contractAddress], // list of contract address you want to enable gasless on
+                  });
+
+                  await biconomy.init();
 
                   // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
                   // console.log('decoded value',['uint256[8]'], verificationResponse.proof)[0]);
