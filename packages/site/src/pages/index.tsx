@@ -1,6 +1,11 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
+import { WorldIDWidget } from '@worldcoin/id'
+import {
+  Semaphore,
+} from '@zk-kit/protocols'
+import { defaultAbiCoder as abi } from "@ethersproject/abi";
 import {
   connectSnap,
   getSnap,
@@ -140,6 +145,30 @@ const Index = () => {
             <b>An error happened:</b> {state.error.message}
           </ErrorMessage>
         )}
+        <Card
+          content={{
+            title: 'Connect with worldcoin',
+            description:
+              'Connect with worldcoin',
+            button: (
+              <WorldIDWidget
+                actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
+                signal="0x7fd0127eB8b134793bf968C7b9Cfedd56c951d69"
+                enableTelemetry
+                onSuccess={(verificationResponse) => {
+                  console.log(verificationResponse);
+
+                  // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
+
+                  console.log(abi.decode(["uint256[8]"], verificationResponse.proof)[0])
+
+                }} // pass the proof to the API or your smart contract
+                onError={(error) => console.error(error)}
+                debug={true} // to aid with debugging, remove in production
+              />
+            ),
+          }}
+        />
         {!state.isFlask && (
           <Card
             content={{
