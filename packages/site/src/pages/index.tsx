@@ -1,15 +1,16 @@
+import contract from '../../../../contract.json';
 import { useContext, useState } from 'react';
+import { Contract } from 'ethers';
 import styled from 'styled-components';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
-import { WorldIDWidget } from '@worldcoin/id'
-import {
-  Semaphore,
-} from '@zk-kit/protocols'
-import { defaultAbiCoder as abi } from "@ethersproject/abi";
+import { WorldIDWidget } from '@worldcoin/id';
+import { Semaphore } from '@zk-kit/protocols';
+import { defaultAbiCoder as abi } from '@ethersproject/abi';
 import {
   connectSnap,
   getSnap,
   getMetaMaskAccount,
+  getMetaMaskSigner,
   sendHello,
   shouldDisplayReconnectButton,
 } from '../utils';
@@ -107,7 +108,7 @@ const ErrorMessage = styled.div`
 
 const Index = () => {
   const [state, dispatch] = useContext(MetaMaskContext);
-  const [metaMaskId, setMetaMaskId] = useState(undefined);
+  const [metaMaskId, setMetaMaskId] = useState('');
 
   const handleConnectClick = async () => {
     try {
@@ -160,20 +161,53 @@ const Index = () => {
         <Card
           content={{
             title: 'Connect with worldcoin',
-            description:
-              'Connect with worldcoin',
+            description: 'Connect with worldcoin',
             button: (
               <WorldIDWidget
                 actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
                 signal={metaMaskId}
                 enableTelemetry
-                onSuccess={(verificationResponse) => {
-                  console.log(verificationResponse);
+                onSuccess={async (verificationResponse) => {
+                  const contractAddress =
+                    '0x2c93776de1D77cd99385c05f55cB44653D028a49';
+
+                  console.log('verificationResponse', verificationResponse);
+
+                  const { nullifier_hash, merkle_root } = verificationResponse;
+                  const proof = abi.decode(
+                    ['uint256[8]'],
+                    verificationResponse.proof,
+                  )[0];
+
+                  // TODO: Implement biconomy here
 
                   // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
+                  // console.log('decoded value',['uint256[8]'], verificationResponse.proof)[0]);
+                  const signer = await getMetaMaskSigner();
+                  console.log('signer:', signer);
+                  const newContract = new Contract(
+                    contractAddress,
+                    contract.abi,
+                    signer,
+                  );
 
-                  console.log(abi.decode(["uint256[8]"], verificationResponse.proof)[0])
+                  const gasEstimated =
+                    await newContract.estimateGas.verifyAndMintNFT(
+                      metaMaskId,
+                      merkle_root,
+                      nullifier_hash,
+                      proof,
+                    );
 
+                  await newContract.verifyAndMintNFT(
+                    metaMaskId,
+                    merkle_root,
+                    nullifier_hash,
+                    proof,
+                    {
+                      gasLimit: Math.ceil(gasEstimated.toNumber() * 1.1),
+                    },
+                  );
                 }} // pass the proof to the API or your smart contract
                 onError={(error) => console.error(error)}
                 debug={true} // to aid with debugging, remove in production
