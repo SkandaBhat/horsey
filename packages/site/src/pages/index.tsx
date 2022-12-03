@@ -1,11 +1,9 @@
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
-import { WorldIDWidget } from '@worldcoin/id'
-import {
-  Semaphore,
-} from '@zk-kit/protocols'
-import { defaultAbiCoder as abi } from "@ethersproject/abi";
+import { WorldIDWidget } from '@worldcoin/id';
+import { Semaphore } from '@zk-kit/protocols';
+import { defaultAbiCoder as abi } from '@ethersproject/abi';
 import {
   connectSnap,
   getSnap,
@@ -62,7 +60,7 @@ const CardContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  max-width: 64.8rem;
+  max-width: 94.8rem;
   width: 100%;
   height: 100%;
   margin-top: 1.5rem;
@@ -146,41 +144,15 @@ const Index = () => {
   return (
     <Container>
       <Heading>
-        Welcome to <Span>template-snap</Span>
+        Welcome to <Span>Horsey</Span>
       </Heading>
-      <Subtitle>
-        Get started by editing <code>src/index.ts</code>
-      </Subtitle>
       <CardContainer>
         {state.error && (
           <ErrorMessage>
             <b>An error happened:</b> {state.error.message}
           </ErrorMessage>
         )}
-        <Card
-          content={{
-            title: 'Connect with worldcoin',
-            description:
-              'Connect with worldcoin',
-            button: (
-              <WorldIDWidget
-                actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
-                signal={metaMaskId}
-                enableTelemetry
-                onSuccess={(verificationResponse) => {
-                  console.log(verificationResponse);
 
-                  // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
-
-                  console.log(abi.decode(["uint256[8]"], verificationResponse.proof)[0])
-
-                }} // pass the proof to the API or your smart contract
-                onError={(error) => console.error(error)}
-                debug={true} // to aid with debugging, remove in production
-              />
-            ),
-          }}
-        />
         {!state.isFlask && (
           <Card
             content={{
@@ -190,22 +162,6 @@ const Index = () => {
               button: <InstallFlaskButton />,
             }}
             fullWidth
-          />
-        )}
-        {!state.installedSnap && (
-          <Card
-            content={{
-              title: 'Connect',
-              description:
-                'Get started by connecting to and installing the example snap.',
-              button: (
-                <ConnectButton
-                  onClick={handleConnectClick}
-                  disabled={!state.isFlask}
-                />
-              ),
-            }}
-            disabled={!state.isFlask}
           />
         )}
         {shouldDisplayReconnectButton(state.installedSnap) && (
@@ -221,36 +177,180 @@ const Index = () => {
                 />
               ),
             }}
+            fullWidth
             disabled={!state.installedSnap}
           />
         )}
+        {!state.installedSnap && (
+          <Card
+            fullWidth={true}
+            content={{
+              title: 'Connect',
+              description:
+                'Get started by connecting your Metamask Wallet to Horsey.',
+              button: (
+                <ConnectButton
+                  onClick={handleConnectClick}
+                  disabled={!state.isFlask}
+                />
+              ),
+            }}
+            disabled={!state.isFlask}
+          />
+        )}
+
+        <h5>NFTs &nbsp; &nbsp; &nbsp; &nbsp;</h5>
         <Card
           content={{
-            title: 'Send Hello message',
-            description:
-              'Display a custom message within a confirmation screen in MetaMask.',
+            title: '🐴 horseyNFT',
+            description: 'get exclusive access to the allowlist',
             button: (
-              <SendHelloButton
-                onClick={handleSendHelloClick}
-                disabled={!state.installedSnap}
+              <WorldIDWidget
+                actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
+                signal={metaMaskId}
+                enableTelemetry
+                onSuccess={(verificationResponse) => {
+                  console.log(verificationResponse);
+
+                  // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
+
+                  console.log(
+                    abi.decode(['uint256[8]'], verificationResponse.proof)[0],
+                  );
+                }} // pass the proof to the API or your smart contract
+                onError={(error) => console.error(error)}
+                debug={true} // to aid with debugging, remove in production
               />
             ),
           }}
-          disabled={!state.installedSnap}
-          fullWidth={
-            state.isFlask &&
-            Boolean(state.installedSnap) &&
-            !shouldDisplayReconnectButton(state.installedSnap)
-          }
+          disabled={!state.isFlask}
         />
-        <Notice>
-          <p>
-            Please note that the <b>snap.manifest.json</b> and{' '}
-            <b>package.json</b> must be located in the server root directory and
-            the bundle must be hosted at the location specified by the location
-            field.
-          </p>
-        </Notice>
+        <Card
+          content={{
+            title: '🤓 testNFT_0',
+            description: 'enter for a chance to win a testNFT',
+            button: (
+              <WorldIDWidget
+                actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
+                signal={metaMaskId}
+                enableTelemetry
+                onSuccess={(verificationResponse) => {
+                  console.log(verificationResponse);
+
+                  // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
+
+                  console.log(
+                    abi.decode(['uint256[8]'], verificationResponse.proof)[0],
+                  );
+                }} // pass the proof to the API or your smart contract
+                onError={(error) => console.error(error)}
+                debug={true} // to aid with debugging, remove in production
+              />
+            ),
+          }}
+          disabled={!state.isFlask}
+        />
+        <Card
+          content={{
+            title: '🦍 testNFT_1',
+            description: 'access our invite-only discord',
+            button: (
+              <WorldIDWidget
+                actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
+                signal={metaMaskId}
+                enableTelemetry
+                onSuccess={(verificationResponse) => {
+                  console.log(verificationResponse);
+
+                  // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
+
+                  console.log(
+                    abi.decode(['uint256[8]'], verificationResponse.proof)[0],
+                  );
+                }} // pass the proof to the API or your smart contract
+                onError={(error) => console.error(error)}
+                debug={true} // to aid with debugging, remove in production
+              />
+            ),
+          }}
+          disabled={!state.isFlask}
+        />
+        <h5>DeFi &nbsp; &nbsp; &nbsp; &nbsp;</h5>
+        <Card
+          content={{
+            title: '🏇 horseySwap',
+            description: 'unlock gasless transactions',
+            button: (
+              <WorldIDWidget
+                actionId="wid_staging_b2fccc6ca5fba5bdb479f8e5f1049e06" // obtain this from developer.worldcoin.org
+                signal={metaMaskId}
+                enableTelemetry
+                onSuccess={(verificationResponse) => {
+                  console.log(verificationResponse);
+
+                  // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
+
+                  console.log(
+                    abi.decode(['uint256[8]'], verificationResponse.proof)[0],
+                  );
+                }} // pass the proof to the API or your smart contract
+                onError={(error) => console.error(error)}
+                debug={true} // to aid with debugging, remove in production
+              />
+            ),
+          }}
+          disabled={!state.isFlask}
+        />
+        <Card
+          content={{
+            title: '🧲 testSwap_0',
+            description: 'earn 10 testTokens with your first transaction',
+            button: (
+              <WorldIDWidget
+                actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
+                signal={metaMaskId}
+                enableTelemetry
+                onSuccess={(verificationResponse) => {
+                  console.log(verificationResponse);
+
+                  // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
+
+                  console.log(
+                    abi.decode(['uint256[8]'], verificationResponse.proof)[0],
+                  );
+                }} // pass the proof to the API or your smart contract
+                onError={(error) => console.error(error)}
+                debug={true} // to aid with debugging, remove in production
+              />
+            ),
+          }}
+          disabled={!state.isFlask}
+        />
+        <Card
+          content={{
+            title: '👨‍🌾 testSwap_1',
+            description: 'unlock 10x boosted yields',
+            button: (
+              <WorldIDWidget
+                actionId="wid_staging_f76caada4a091ea4b8423fa667be9f07" // obtain this from developer.worldcoin.org
+                signal={metaMaskId}
+                enableTelemetry
+                onSuccess={(verificationResponse) => {
+                  console.log(verificationResponse);
+
+                  // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
+
+                  console.log(
+                    abi.decode(['uint256[8]'], verificationResponse.proof)[0],
+                  );
+                }} // pass the proof to the API or your smart contract
+                onError={(error) => console.error(error)}
+                debug={true} // to aid with debugging, remove in production
+              />
+            ),
+          }}
+          disabled={!state.isFlask}
+        />
       </CardContainer>
     </Container>
   );
