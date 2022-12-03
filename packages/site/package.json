@@ -9,8 +9,7 @@
     "lint": "yarn lint:eslint && yarn lint:misc --check",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
-    "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
-    "start": "cross-env GATSBY_TELEMETRY_DISABLED=1 gatsby develop"
+    "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore"
   },
   "browserslist": {
     "production": [
@@ -36,7 +35,6 @@
     "@metamask/eslint-config-jest": "^10.0.0",
     "@metamask/eslint-config-nodejs": "^10.0.0",
     "@metamask/eslint-config-typescript": "^10.0.0",
-    "@svgr/webpack": "^6.4.0",
     "@testing-library/dom": "^8.17.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

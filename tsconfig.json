@@ -1,14 +1,31 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "useUnknownInCatchVariables": false,
-    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "target": "ES2017"
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
-  "exclude": ["**/__snapshots__/**", "**/test/**", "**/*.test.ts"]
+  "exclude": [
+    "**/__snapshots__/**",
+    "**/test/**",
+    "**/*.test.ts"
+  ],
+  "include": [
+    "src"
+  ]
 }

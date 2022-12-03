@@ -1,12 +1,11 @@
 import contract from '../../../../contract.json';
 import { useContext, useState } from 'react';
-import { Biconomy } from '@biconomy/mexa';
 import { Contract } from 'ethers';
 import styled from 'styled-components';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { WorldIDWidget } from '@worldcoin/id';
-import { Semaphore } from '@zk-kit/protocols';
 import { defaultAbiCoder as abi } from '@ethersproject/abi';
+
 import {
   connectSnap,
   getSnap,
@@ -22,6 +21,11 @@ import {
   SendHelloButton,
   Card,
 } from '../components';
+
+import { Biconomy } from "@biconomy/mexa";
+
+let biconomy: any;
+
 
 // type ExternalProvider = {
 //   isMetaMask?: boolean;
@@ -199,13 +203,14 @@ const Index = () => {
                   )[0];
 
                   // TODO: Implement biconomy here
-                  const biconomy = new Biconomy(window.ethereum, {
-                    apiKey: biconomyAPIKey,
-                    debug: true,
-                    contractAddresses: [contractAddress], // list of contract address you want to enable gasless on
-                  });
 
-                  await biconomy.init();
+                  // biconomy = new Biconomy(window.ethereum as ExternalProvider, {
+                  //   apiKey: config.apiKey.prod,
+                  //   debug: true,
+                  //   contractAddresses: [config.contrxcact.address],
+                  // });
+                  // await biconomy.init();
+
 
                   // console.log(Semaphore.packToSolidityProof(verificationResponse.proof));
                   // console.log('decoded value',['uint256[8]'], verificationResponse.proof)[0]);
